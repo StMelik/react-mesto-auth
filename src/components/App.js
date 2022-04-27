@@ -14,6 +14,7 @@ import Login from "./Login";
 import Register from "./Register";
 import {Route, Switch} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
+import {LoggedInContext} from "../contexts/LoggedInContext";
 
 const api = new Api(optionsApi)
 
@@ -150,64 +151,67 @@ function App() {
     return (
         <div className="page__content">
             <CurrentUserContext.Provider value={currentUser}>
-                <Header/>
-                <Switch>
-                    <Route path='/sign-in'>
-                        <Login/>
-                    </Route>
-                    <Route path='/sign-up'>
-                        <Register/>
-                    </Route>
-                    <ProtectedRoute
-                        path='/'
-                        isLoggedIn={isLoggedIn}
-                        isPreloader={isPreloader}
-                        component={Main}
-                        onEditProfile={handleEditProfileClick}
-                        onAddPlace={handleAddPlaceClick}
-                        onEditAvatar={handleEditAvatarClick}
-                        onCardClick={handleCardClick}
-                        cards={cards}
-                        onCardLike={handleCardLike}
-                        onCardDelete={handleComfirmDeleteClick}
+                <LoggedInContext.Provider value={isLoggedIn}>
+                    <Header/>
+                    <Switch>
+                        <Route path='/sign-in'>
+                            <Login/>
+                        </Route>
+                        <Route path='/sign-up'>
+                            <Register/>
+                        </Route>
+                        <ProtectedRoute
+                            exact
+                            path='/'
+                            isLoggedIn={isLoggedIn}
+                            isPreloader={isPreloader}
+                            component={Main}
+                            onEditProfile={handleEditProfileClick}
+                            onAddPlace={handleAddPlaceClick}
+                            onEditAvatar={handleEditAvatarClick}
+                            onCardClick={handleCardClick}
+                            cards={cards}
+                            onCardLike={handleCardLike}
+                            onCardDelete={handleComfirmDeleteClick}
+                        />
+                    </Switch>
+                    <Footer/>
+
+                    {/* Редактировать профиль */}
+                    <EditProfilePopup
+                        isOpen={isEditProfilePopupOpen}
+                        onClose={closeAllPopups}
+                        onUpdateUser={handleUpdateUser}
+                        loader={isLoadingButton}
                     />
-                </Switch>
-                <Footer/>
 
-                {/* Редактировать профиль */}
-                <EditProfilePopup
-                    isOpen={isEditProfilePopupOpen}
-                    onClose={closeAllPopups}
-                    onUpdateUser={handleUpdateUser}
-                    loader={isLoadingButton}
-                />
+                    {/* Аватар */}
+                    <EditAvatarPopup
+                        isOpen={isEditAvatarPopupOpen}
+                        onClose={closeAllPopups}
+                        onUpdateAvatar={handleUpdateAvatar}
+                        loader={isLoadingButton}
+                    />
 
-                {/* Аватар */}
-                <EditAvatarPopup
-                    isOpen={isEditAvatarPopupOpen}
-                    onClose={closeAllPopups}
-                    onUpdateAvatar={handleUpdateAvatar}
-                    loader={isLoadingButton}
-                />
+                    {/* Новое место */}
+                    <AddPlacePopup
+                        isOpen={isAddPlacePopupOpen}
+                        onClose={closeAllPopups}
+                        onAddPlace={handleAddPlaceSubmit}
+                        loader={isLoadingButton}
+                    />
 
-                {/* Новое место */}
-                <AddPlacePopup
-                    isOpen={isAddPlacePopupOpen}
-                    onClose={closeAllPopups}
-                    onAddPlace={handleAddPlaceSubmit}
-                    loader={isLoadingButton}
-                />
+                    {/* Подтверждение удаления */}
+                    <ConfirmDeletePopup
+                        isOpen={isComfirmDeletePopupOpen}
+                        onClose={closeAllPopups}
+                        onDelete={handleCardDelete}
+                        loader={isLoadingButton}
+                    />
 
-                {/* Подтверждение удаления */}
-                <ConfirmDeletePopup
-                    isOpen={isComfirmDeletePopupOpen}
-                    onClose={closeAllPopups}
-                    onDelete={handleCardDelete}
-                    loader={isLoadingButton}
-                />
-
-                {/* Большая картинка */}
-                <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+                    {/* Большая картинка */}
+                    <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+                </LoggedInContext.Provider>
             </CurrentUserContext.Provider>
         </div>
     );

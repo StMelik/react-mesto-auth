@@ -31,16 +31,17 @@
     width: 100%;
     padding: 14px 84px;
     border: none;
-    background: #ffffff;
+    background-color: #ffffff;
     border-radius: 2px;
     font-size: 18px;
     line-height: 1.21;
     cursor: pointer;
+    transition: all .3s;
 }
 
-/*.register__question {*/
-/*    display: flex;*/
-/*}*/
+.form-register__submit:hover {
+    background-color: #ffffffd9;
+}
 
 .register__question-text {
     margin: 15px 0 0;
@@ -50,4 +51,9 @@
 .register__question-link {
     color: inherit;
     text-decoration: none;
+    transition: all .3s;
+}
+
+.register__question-link:hover {
+    opacity: .6;
 }

@@ -1,5 +1,6 @@
 import './Register.css'
 import {useState} from "react";
+import {Link} from "react-router-dom";
 
 
 function Register() {
@@ -26,10 +27,10 @@ function Register() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button className="form-register__submit">Войти</button>
+                    <button className="form-register__submit">Зарегистрироваться</button>
                 </form>
                     <p className="register__question-text">
-                        Уже зарегистрированы? <a href="#" className="register__question-link">Войти</a>
+                        Уже зарегистрированы? <Link to="/sign-in" className="register__question-link">Войти</Link>
                     </p>
             </section>
     )

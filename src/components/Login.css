@@ -36,4 +36,9 @@
     font-size: 18px;
     line-height: 1.21;
     cursor: pointer;
+    transition: all .3s;
+}
+
+.form-login__submit:hover {
+    background-color: #ffffffd9;
 }
