@@ -10,10 +10,10 @@ import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ComfirmDeletePopup';
-import Preloader from './Preloader';
 import Login from "./Login";
 import Register from "./Register";
-import {Redirect, Route, Switch} from "react-router-dom";
+import {Route, Switch} from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
 
 const api = new Api(optionsApi)
 
@@ -158,21 +158,19 @@ function App() {
                     <Route path='/sign-up'>
                         <Register/>
                     </Route>
-                    <Route exact path='/'>
-                        {isLoggedIn ?
-                            isPreloader ? <Preloader/> :
-                                <Main
-                                    onEditProfile={handleEditProfileClick}
-                                    onAddPlace={handleAddPlaceClick}
-                                    onEditAvatar={handleEditAvatarClick}
-                                    onCardClick={handleCardClick}
-                                    cards={cards}
-                                    onCardLike={handleCardLike}
-                                    onCardDelete={handleComfirmDeleteClick}
-                                /> :
-                            <Redirect to='/sign-in'/>
-                        }
-                    </Route>
+                    <ProtectedRoute
+                        path='/'
+                        isLoggedIn={isLoggedIn}
+                        isPreloader={isPreloader}
+                        component={Main}
+                        onEditProfile={handleEditProfileClick}
+                        onAddPlace={handleAddPlaceClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onCardClick={handleCardClick}
+                        cards={cards}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleComfirmDeleteClick}
+                    />
                 </Switch>
                 <Footer/>
 
