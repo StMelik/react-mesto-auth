@@ -15,12 +15,14 @@ import Register from "./Register";
 import {Route, Switch} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import {LoggedInContext} from "../contexts/LoggedInContext";
+import InfoTooltip from "./InfoTooltip";
 
 const api = new Api(optionsApi)
 
 function App() {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [isSuccessfullyRegister, setIsSuccessfullyRegister] = useState(false)
 
     // Состояние попапов
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -28,6 +30,7 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isComfirmDeletePopupOpen, setIsComfirmDeletePopupOpen] = useState(false)
     const [selectedCard, setSelectedCard] = useState({isOpen: false})
+    const [isConfirmRegisterPopupOpen, setIsConfirmRegisterPopupOpen] = useState(false)
 
     // Состояние загрузчиков
     const [isLoadingButton, setIsLoadingButton] = useState(false)
@@ -69,12 +72,18 @@ function App() {
         setCardId(card._id)
     }
 
+    function handleConfirmRegisterClick(e) {
+        e.preventDefault()
+        setIsConfirmRegisterPopupOpen(true)
+    }
+
     function closeAllPopups() {
         setIsEditProfilePopupOpen(false)
         setIsAddPlacePopupOpen(false)
         setIsEditAvatarPopupOpen(false)
         setIsComfirmDeletePopupOpen(false)
         setSelectedCard({isOpen: false})
+        setIsConfirmRegisterPopupOpen(false)
     }
 
     // Открыть большую карточку
@@ -158,7 +167,9 @@ function App() {
                             <Login/>
                         </Route>
                         <Route path='/sign-up'>
-                            <Register/>
+                            <Register
+                                onRegister={handleConfirmRegisterClick}
+                            />
                         </Route>
                         <ProtectedRoute
                             exact
@@ -176,6 +187,12 @@ function App() {
                         />
                     </Switch>
                     <Footer/>
+
+                    <InfoTooltip
+                        isOpen={isConfirmRegisterPopupOpen}
+                        onClose={closeAllPopups}
+                        isSuccessfullyRegister={isSuccessfullyRegister}
+                    />
 
                     {/* Редактировать профиль */}
                     <EditProfilePopup

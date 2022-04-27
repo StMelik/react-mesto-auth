@@ -3,7 +3,10 @@ import {useState} from "react";
 import {Link} from "react-router-dom";
 
 
-function Register() {
+function Register(props) {
+
+    const {onRegister} = props
+
     const [login, setLogin] = useState('')
     const [password, setPassword] = useState('')
 
@@ -27,7 +30,7 @@ function Register() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button className="form-register__submit">Зарегистрироваться</button>
+                    <button className="form-register__submit" onClick={onRegister}>Зарегистрироваться</button>
                 </form>
                     <p className="register__question-text">
                         Уже зарегистрированы? <Link to="/sign-in" className="register__question-link">Войти</Link>

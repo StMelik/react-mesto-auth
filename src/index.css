@@ -44,6 +44,10 @@
 @import url("./blocks/popup/__container-img/popup__container-img.css");
 @import url("./blocks/popup/__big-img/popup__big-img.css");
 @import url("./blocks/popup/__title-img/popup__title-img.css");
+@import url("./blocks/popup/__image/popup__image.css");
+@import url("./blocks/popup/__image/_type_successfully/popup__image_type_successfully.css");
+@import url("./blocks/popup/__image/_type_error/popup__image_type_error.css");
+@import url("./blocks/popup/__message/popup__message.css");
 
 /*----------ELEMENTS----------*/
 @import url("./blocks/elements/elements.css");
