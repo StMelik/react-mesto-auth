@@ -12,6 +12,7 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ComfirmDeletePopup';
 import Preloader from './Preloader';
 import Login from "./Login";
+import Register from "./Register";
 
 const api = new Api(optionsApi)
 
@@ -146,7 +147,7 @@ function App() {
     <div className="page__content">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        <Login/>
+        <Register/>
         {/*{isPreloader ?*/}
         {/*  <Preloader /> :*/}
         {/*  <Main*/}
