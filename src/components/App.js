@@ -11,6 +11,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ComfirmDeletePopup';
 import Preloader from './Preloader';
+import Login from "./Login";
 
 const api = new Api(optionsApi)
 
@@ -145,18 +146,19 @@ function App() {
     <div className="page__content">
       <CurrentUserContext.Provider value={currentUser}>
         <Header />
-        {isPreloader ?
-          <Preloader /> :
-          <Main
-            onEditProfile={handleEditProfileClick}
-            onAddPlace={handleAddPlaceClick}
-            onEditAvatar={handleEditAvatarClick}
-            onCardClick={handleCardClick}
-            cards={cards}
-            onCardLike={handleCardLike}
-            onCardDelete={handleComfirmDeleteClick}
-          />
-        }
+        <Login/>
+        {/*{isPreloader ?*/}
+        {/*  <Preloader /> :*/}
+        {/*  <Main*/}
+        {/*    onEditProfile={handleEditProfileClick}*/}
+        {/*    onAddPlace={handleAddPlaceClick}*/}
+        {/*    onEditAvatar={handleEditAvatarClick}*/}
+        {/*    onCardClick={handleCardClick}*/}
+        {/*    cards={cards}*/}
+        {/*    onCardLike={handleCardLike}*/}
+        {/*    onCardDelete={handleComfirmDeleteClick}*/}
+        {/*  />*/}
+        {/*}*/}
         <Footer />
 
         {/* Редактировать профиль */}
