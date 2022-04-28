@@ -1,34 +1,26 @@
 import logo from '../images/logo.svg';
-import HeaderInfo from "./HeaderInfo";
-import {Route, Switch} from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function Header(props) {
-    const {onLoggOut} = props
+    const {onLoggOut, isLoggedIn, userEmail, name, path} = props
 
     return (
         <header className="header">
             <img className="header__logo" src={logo} alt="Логотип" />
-            <Switch>
-                <Route path="/sign-in">
-                    <HeaderInfo
-                        path="/sign-up"
-                        name="Регистрация"
-                    />
-                </Route>
-                <Route path="/sign-up">
-                    <HeaderInfo
-                        path="/sign-in"
-                        name="Войти"
-                    />
-                </Route>
-                <Route exact path="/">
-                    <HeaderInfo
-                        path="/sign-in"
-                        name="Выйти"
-                        onLoggOut={onLoggOut}
-                    />
-                </Route>
-            </Switch>
+            <div className="header__info-box">
+                {isLoggedIn ? <p className="header__email">{userEmail}</p> : null}
+                {isLoggedIn ?
+                    <span
+                        className="header__link header__link_type_exit"
+                        onClick={onLoggOut}
+                    >{name}</span> :
+                    <Link
+                        to={path}
+                        className="header__link"
+                    >
+                        {name}
+                    </Link>}
+            </div>
         </header>
     )
 }

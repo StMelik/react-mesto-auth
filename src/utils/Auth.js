@@ -1,6 +1,4 @@
-
 const BASE_URL = 'https://auth.nomoreparties.co';
-
 
 export const signUp = ({password, email}) => {
     return fetch(BASE_URL + '/signup', {

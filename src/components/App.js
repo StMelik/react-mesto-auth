@@ -14,15 +14,11 @@ import Login from "./Login";
 import Register from "./Register";
 import {Route, Switch, useHistory} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
-import {LoggedInContext} from "../contexts/LoggedInContext";
 import InfoTooltip from "./InfoTooltip";
 import * as auth from "../utils/Auth";
 
 const api = new Api(optionsApi)
-
 const token = JSON.parse(localStorage.getItem('jwt'))
-
-console.log("TOKEN:", token)
 
 function App() {
 
@@ -32,7 +28,6 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     // Статус для попапа подтверждения
-    // const [isSuccessfullyRegister, setIsSuccessfullyRegister] = useState(false)
     const [isSuccessfully, setIsSuccessfully] = useState(false)
 
     // E-mail пользовотеля
@@ -44,7 +39,6 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isComfirmDeletePopupOpen, setIsComfirmDeletePopupOpen] = useState(false)
     const [selectedCard, setSelectedCard] = useState({isOpen: false})
-    // const [isConfirmRegisterPopupOpen, setIsConfirmRegisterPopupOpen] = useState(false)
     const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false)
 
     // Состояние загрузчиков
@@ -58,8 +52,9 @@ function App() {
     // ID Карточки
     const [cardId, setCardId] = useState('')
 
-    // Запрос данных пользователя и карточек с сервера
+    // Запрос данных пользователя и карточек с сервера и вход по токену
     useEffect(() => {
+        handleSignInProfileToken()
         Promise.all([api.getUserInfo(), api.getInitialCards()])
             .then(res => {
                 setCurrentUser(res[0])
@@ -67,10 +62,6 @@ function App() {
                 setIsPreloader(false)
             })
             .catch(err => console.log("Не удалось загрузить страницу:", err))
-    }, [])
-
-    useEffect(() => {
-        handleSignInProfileToken()
     }, [])
 
     // Управление состоянием попапов (открыть)
@@ -186,14 +177,13 @@ function App() {
         setIsLoadingButton(true)
 
         auth.signUp({password, email})
-            .then(res => {
-                console.log("YES Register", res);
+            .then(() => {
                 setIsSuccessfully(true)
                 handleConfirmRegisterClick()
                 history.push('/sign-in')
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
                 setIsSuccessfully(false)
                 handleConfirmRegisterClick()
             })
@@ -206,14 +196,13 @@ function App() {
 
         auth.signIn({password, email})
             .then(res => {
-                console.log("YES Login", res);
                 setIsLoggedIn(true)
                 setUserEmail(email)
                 localStorage.setItem('jwt', JSON.stringify(res.token))
                 history.push('/')
             })
-            .catch(e => {
-                console.log(e)
+            .catch(err => {
+                console.log(err)
                 handleConfirmLoginClick()
             })
             .finally(() => setIsLoadingButton(false))
@@ -229,12 +218,9 @@ function App() {
 
     // Вход в профиль по токену
     function handleSignInProfileToken() {
-            // history.replace('/')
-            // setIsPreloader(true)
         if(token) {
             auth.getUserInfo(token)
                 .then(res => {
-                    console.log("YES Login", res);
                     setIsLoggedIn(true)
                     setUserEmail(res.data.email)
                     history.push('/')
@@ -248,19 +234,25 @@ function App() {
 
     return (
         <div className="page__content">
-            <CurrentUserContext.Provider value={{currentUser, userEmail}}>
-                <LoggedInContext.Provider value={isLoggedIn}>
-                    <Header
-                        onLoggOut={handleSignOutProfile}
-                    />
+            <CurrentUserContext.Provider value={currentUser}>
                     <Switch>
                         <Route path='/sign-in'>
+                            <Header
+                                path="/sign-up"
+                                name="Регистрация"
+                                isLoggedIn={isLoggedIn}
+                            />
                             <Login
                                 onLogin={handleSignInProfile}
                                 loader={isLoadingButton}
                             />
                         </Route>
                         <Route path='/sign-up'>
+                            <Header
+                                path="/sign-in"
+                                name="Войти"
+                                isLoggedIn={isLoggedIn}
+                            />
                             <Register
                                 onRegister={handleRegisterProfile}
                                 loader={isLoadingButton}
@@ -271,6 +263,8 @@ function App() {
                             path='/'
                             isLoggedIn={isLoggedIn}
                             isPreloader={isPreloader}
+                            onLoggOut={handleSignOutProfile}
+                            userEmail={userEmail}
                             component={Main}
                             onEditProfile={handleEditProfileClick}
                             onAddPlace={handleAddPlaceClick}
@@ -323,7 +317,6 @@ function App() {
 
                     {/* Большая картинка */}
                     <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
-                </LoggedInContext.Provider>
             </CurrentUserContext.Provider>
         </div>
     );

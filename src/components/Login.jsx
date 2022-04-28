@@ -3,7 +3,6 @@ import {useState} from "react";
 
 function Login(props) {
     const {onLogin, loader} = props
-
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
 
