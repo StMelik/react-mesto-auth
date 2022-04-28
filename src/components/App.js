@@ -12,17 +12,31 @@ import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ComfirmDeletePopup';
 import Login from "./Login";
 import Register from "./Register";
-import {Route, Switch} from "react-router-dom";
+import {Route, Switch, useHistory} from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import {LoggedInContext} from "../contexts/LoggedInContext";
 import InfoTooltip from "./InfoTooltip";
+import * as auth from "../utils/Auth";
 
 const api = new Api(optionsApi)
 
+const token = JSON.parse(localStorage.getItem('jwt'))
+
+console.log("TOKEN:", token)
+
 function App() {
 
+    const history = useHistory()
+
+    // Статус выполненого входа
     const [isLoggedIn, setIsLoggedIn] = useState(false)
-    const [isSuccessfullyRegister, setIsSuccessfullyRegister] = useState(false)
+
+    // Статус для попапа подтверждения
+    // const [isSuccessfullyRegister, setIsSuccessfullyRegister] = useState(false)
+    const [isSuccessfully, setIsSuccessfully] = useState(false)
+
+    // E-mail пользовотеля
+    const [userEmail, setUserEmail] = useState("Your email")
 
     // Состояние попапов
     const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false)
@@ -30,7 +44,8 @@ function App() {
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false)
     const [isComfirmDeletePopupOpen, setIsComfirmDeletePopupOpen] = useState(false)
     const [selectedCard, setSelectedCard] = useState({isOpen: false})
-    const [isConfirmRegisterPopupOpen, setIsConfirmRegisterPopupOpen] = useState(false)
+    // const [isConfirmRegisterPopupOpen, setIsConfirmRegisterPopupOpen] = useState(false)
+    const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false)
 
     // Состояние загрузчиков
     const [isLoadingButton, setIsLoadingButton] = useState(false)
@@ -54,7 +69,11 @@ function App() {
             .catch(err => console.log("Не удалось загрузить страницу:", err))
     }, [])
 
-    // Управление состоянием попапов
+    useEffect(() => {
+        handleSignInProfileToken()
+    }, [])
+
+    // Управление состоянием попапов (открыть)
     function handleEditAvatarClick() {
         setIsEditAvatarPopupOpen(true)
     }
@@ -72,18 +91,23 @@ function App() {
         setCardId(card._id)
     }
 
-    function handleConfirmRegisterClick(e) {
-        e.preventDefault()
-        setIsConfirmRegisterPopupOpen(true)
+    function handleConfirmRegisterClick() {
+        setIsConfirmPopupOpen(true)
     }
 
+    function handleConfirmLoginClick() {
+        setIsSuccessfully(false)
+        setIsConfirmPopupOpen(true)
+    }
+
+    // (закрыть)
     function closeAllPopups() {
         setIsEditProfilePopupOpen(false)
         setIsAddPlacePopupOpen(false)
         setIsEditAvatarPopupOpen(false)
         setIsComfirmDeletePopupOpen(false)
         setSelectedCard({isOpen: false})
-        setIsConfirmRegisterPopupOpen(false)
+        setIsConfirmPopupOpen(false)
     }
 
     // Открыть большую карточку
@@ -157,18 +181,81 @@ function App() {
             .finally(() => setIsLoadingButton(false))
     }
 
+    // Регистрация
+    function handleRegisterProfile({password, email}) {
+        auth.signUp({password, email})
+            .then(res => {
+                console.log("YES Register", res);
+                setIsSuccessfully(true)
+                handleConfirmRegisterClick()
+                history.push('/sign-in')
+            })
+            .catch(e => {
+                console.log(e)
+                setIsSuccessfully(false)
+                handleConfirmRegisterClick()
+            })
+    }
+
+    // Вход в профиль
+    function handleSignInProfile({password, email}) {
+        auth.signIn({password, email})
+            .then(res => {
+                console.log("YES Login", res);
+                setIsLoggedIn(true)
+                setUserEmail(email)
+                localStorage.setItem('jwt', JSON.stringify(res.token))
+                history.push('/')
+            })
+            .catch(e => {
+                console.log(e)
+                handleConfirmLoginClick()
+            })
+    }
+
+    // Выход из профиля
+    function handleSignOutProfile() {
+        setIsLoggedIn(false)
+        localStorage.removeItem('jwt')
+        setUserEmail("Your email")
+        history.push('/sign-in')
+    }
+
+    // Вход в профиль по токену
+    function handleSignInProfileToken() {
+            // history.replace('/')
+            // setIsPreloader(true)
+        if(token) {
+            auth.getUserInfo(token)
+                .then(res => {
+                    console.log("YES Login", res);
+                    setIsLoggedIn(true)
+                    setUserEmail(res.data.email)
+                    history.push('/')
+                })
+                .catch(e => {
+                    console.log(e)
+                    handleConfirmLoginClick()
+                })
+        }
+    }
+
     return (
         <div className="page__content">
-            <CurrentUserContext.Provider value={currentUser}>
+            <CurrentUserContext.Provider value={{currentUser, userEmail}}>
                 <LoggedInContext.Provider value={isLoggedIn}>
-                    <Header/>
+                    <Header
+                        onLoggOut={handleSignOutProfile}
+                    />
                     <Switch>
                         <Route path='/sign-in'>
-                            <Login/>
+                            <Login
+                                onLogin={handleSignInProfile}
+                            />
                         </Route>
                         <Route path='/sign-up'>
                             <Register
-                                onRegister={handleConfirmRegisterClick}
+                                onRegister={handleRegisterProfile}
                             />
                         </Route>
                         <ProtectedRoute
@@ -189,9 +276,9 @@ function App() {
                     <Footer/>
 
                     <InfoTooltip
-                        isOpen={isConfirmRegisterPopupOpen}
+                        isOpen={isConfirmPopupOpen}
                         onClose={closeAllPopups}
-                        isSuccessfullyRegister={isSuccessfullyRegister}
+                        isSuccessfully={isSuccessfully}
                     />
 
                     {/* Редактировать профиль */}

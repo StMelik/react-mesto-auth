@@ -3,7 +3,7 @@ import Popup from "./Popup";
 
 function InfoTooltip(props) {
 
-    const {isOpen, onClose, isSuccessfullyRegister} = props
+    const {isOpen, onClose, isSuccessfully} = props
 
     return (
         <Popup
@@ -18,8 +18,8 @@ function InfoTooltip(props) {
                     onClick={onClose}
                 ></button>
                 <div
-                    className={`popup__image ${isSuccessfullyRegister ? "popup__image_type_successfully" : "popup__image_type_error"}`}></div>
-                <p className="popup__message">{isSuccessfullyRegister ? "Вы успешно зарегистрировались!" : `Что-то пошло не так! Попробуйте ещё раз.`}</p>
+                    className={`popup__image ${isSuccessfully ? "popup__image_type_successfully" : "popup__image_type_error"}`}></div>
+                <p className="popup__message">{isSuccessfully ? "Вы успешно зарегистрировались!" : `Что-то пошло не так! Попробуйте ещё раз.`}</p>
             </div>
         </Popup>
     )

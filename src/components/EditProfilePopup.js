@@ -6,7 +6,7 @@ import Popup from "./Popup"
 function EditProfilePopup(props) {
     const { loader, isOpen, onClose, onUpdateUser } = props
 
-    const currentUser = useContext(CurrentUserContext)
+    const {currentUser} = useContext(CurrentUserContext)
 
     useEffect(() => {
         setName(currentUser.name || '');

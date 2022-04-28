@@ -2,7 +2,9 @@ import logo from '../images/logo.svg';
 import HeaderInfo from "./HeaderInfo";
 import {Route, Switch} from "react-router-dom";
 
-function Header() {
+function Header(props) {
+    const {onLoggOut} = props
+
     return (
         <header className="header">
             <img className="header__logo" src={logo} alt="Логотип" />
@@ -23,11 +25,10 @@ function Header() {
                     <HeaderInfo
                         path="/sign-in"
                         name="Выйти"
-                        email="Your email"
+                        onLoggOut={onLoggOut}
                     />
                 </Route>
             </Switch>
-
         </header>
     )
 }

@@ -9,7 +9,7 @@ const api = new Api(optionsApi)
 function Main(props) {
     const { onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCardLike, onCardDelete } = props
 
-    const currentUser = useContext(CurrentUserContext)
+    const {currentUser} = useContext(CurrentUserContext)
 
     return (
         <main className="main">

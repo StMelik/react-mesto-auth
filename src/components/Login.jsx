@@ -1,10 +1,16 @@
 import './Login.css'
 import {useState} from "react";
 
+function Login(props) {
+    const {onLogin} = props
 
-function Login() {
-    const [login, setLogin] = useState('')
+    const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    function handleSubmitForm(evt) {
+        evt.preventDefault()
+        onLogin({password, email})
+    }
 
     return (
             <section className='login'>
@@ -15,8 +21,8 @@ function Login() {
                         type="email"
                         placeholder='Email'
                         name='email'
-                        value={login}
-                        onChange={e => setLogin(e.target.value)}
+                        value={email}
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <input
                         className="form-login__input form-login__input_password"
@@ -26,7 +32,10 @@ function Login() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-                    <button className="form-login__submit">Войти</button>
+                    <button
+                        className="form-login__submit"
+                        onClick={handleSubmitForm}
+                    >Войти</button>
                 </form>
             </section>
     )
