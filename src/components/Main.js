@@ -1,14 +1,9 @@
 import { useContext } from "react"
-import { optionsApi } from "../utils/optionsApi"
-import Api from "../utils/Api"
 import Card from "./Card"
 import { CurrentUserContext } from "../contexts/CurrentUserContext"
 
-const api = new Api(optionsApi)
-
 function Main(props) {
     const { onEditProfile, onAddPlace, onEditAvatar, onCardClick, cards, onCardLike, onCardDelete } = props
-
     const currentUser = useContext(CurrentUserContext)
 
     return (

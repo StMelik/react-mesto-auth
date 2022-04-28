@@ -5,16 +5,14 @@ import Popup from "./Popup"
 
 function EditProfilePopup(props) {
     const { loader, isOpen, onClose, onUpdateUser } = props
-
     const currentUser = useContext(CurrentUserContext)
+    const [name, setName] = useState('')
+    const [description, setDescription] = useState('')
 
     useEffect(() => {
         setName(currentUser.name || '');
         setDescription(currentUser.about || '');
     }, [currentUser])
-
-    const [name, setName] = useState('')
-    const [description, setDescription] = useState('')
 
     function handleSubmit(evt) {
         evt.preventDefault()
