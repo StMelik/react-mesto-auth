@@ -2,7 +2,7 @@ import './Login.css'
 import {useState} from "react";
 
 function Login(props) {
-    const {onLogin} = props
+    const {onLogin, loader} = props
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -35,7 +35,7 @@ function Login(props) {
                     <button
                         className="form-login__submit"
                         onClick={handleSubmitForm}
-                    >Войти</button>
+                    >{loader ? "Вход..." : "Войти"}</button>
                 </form>
             </section>
     )

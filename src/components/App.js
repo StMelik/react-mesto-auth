@@ -183,6 +183,8 @@ function App() {
 
     // Регистрация
     function handleRegisterProfile({password, email}) {
+        setIsLoadingButton(true)
+
         auth.signUp({password, email})
             .then(res => {
                 console.log("YES Register", res);
@@ -195,10 +197,13 @@ function App() {
                 setIsSuccessfully(false)
                 handleConfirmRegisterClick()
             })
+            .finally(() => setIsLoadingButton(false))
     }
 
     // Вход в профиль
     function handleSignInProfile({password, email}) {
+        setIsLoadingButton(true)
+
         auth.signIn({password, email})
             .then(res => {
                 console.log("YES Login", res);
@@ -211,6 +216,7 @@ function App() {
                 console.log(e)
                 handleConfirmLoginClick()
             })
+            .finally(() => setIsLoadingButton(false))
     }
 
     // Выход из профиля
@@ -251,11 +257,13 @@ function App() {
                         <Route path='/sign-in'>
                             <Login
                                 onLogin={handleSignInProfile}
+                                loader={isLoadingButton}
                             />
                         </Route>
                         <Route path='/sign-up'>
                             <Register
                                 onRegister={handleRegisterProfile}
+                                loader={isLoadingButton}
                             />
                         </Route>
                         <ProtectedRoute
