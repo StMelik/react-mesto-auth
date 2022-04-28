@@ -69,3 +69,11 @@
 
 /*----------PRELOADER----------*/
 @import url('./blocks/preloader/preloader.css');
+
+/*----------AUTH----------*/
+@import url('./blocks/auth/auth.css');
+@import url('./blocks/auth/__title/auth__title.css');
+@import url('./blocks/auth/form-auth/__input/form-auth__input.css');
+@import url('./blocks/auth/form-auth/__submit/form-auth__submit.css');
+@import url('./blocks/auth/__question-text/auth__question-text.css');
+@import url('./blocks/auth/__question-link/auth__question-link.css');

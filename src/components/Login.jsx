@@ -1,4 +1,3 @@
-import './Login.css'
 import {useState} from "react";
 
 function Login(props) {
@@ -12,11 +11,11 @@ function Login(props) {
     }
 
     return (
-            <section className='login'>
-                <h2 className='login__title'>Вход</h2>
-                <form className='login__form form-login' name='login'>
+            <section className='auth'>
+                <h2 className='auth__title'>Вход</h2>
+                <form className='auth__form form-auth' name='login'>
                     <input
-                        className="form-login__input form-login__input_email"
+                        className="form-auth__input form-auth__input_email"
                         type="email"
                         placeholder='Email'
                         name='email'
@@ -24,7 +23,7 @@ function Login(props) {
                         onChange={e => setEmail(e.target.value)}
                     />
                     <input
-                        className="form-login__input form-login__input_password"
+                        className="form-auth__input form-auth__input_password"
                         type="password"
                         placeholder='Пароль'
                         name='password'
@@ -32,7 +31,7 @@ function Login(props) {
                         onChange={e => setPassword(e.target.value)}
                     />
                     <button
-                        className="form-login__submit"
+                        className="form-auth__submit"
                         onClick={handleSubmitForm}
                     >{loader ? "Вход..." : "Войти"}</button>
                 </form>

@@ -1,4 +1,3 @@
-import './Register.css'
 import {useState} from "react";
 import {Link} from "react-router-dom";
 
@@ -14,11 +13,11 @@ function Register(props) {
     }
 
     return (
-            <section className='register'>
-                <h2 className='register__title'>Регистрация</h2>
-                <form className='register__form form-register' name='register'>
+            <section className='auth'>
+                <h2 className='auth__title'>Регистрация</h2>
+                <form className='auth__form form-auth' name='register'>
                     <input
-                        className="form-register__input form-register__input_email"
+                        className="form-auth__input form-auth__input_email"
                         type="email"
                         placeholder='Email'
                         name='email'
@@ -27,7 +26,7 @@ function Register(props) {
                         required
                     />
                     <input
-                        className="form-register__input form-register__input_password"
+                        className="form-auth__input form-auth__input_password"
                         type="password"
                         placeholder='Пароль'
                         name='password'
@@ -35,12 +34,12 @@ function Register(props) {
                         onChange={e => setPassword(e.target.value)}
                     />
                     <button
-                        className="form-register__submit"
+                        className="form-auth__submit"
                         onClick={handleSubmitForm}
                     >{loader ? "Регистрация...": "Зарегистрироваться"}</button>
                 </form>
-                    <p className="register__question-text">
-                        Уже зарегистрированы? <Link to="/sign-in" className="register__question-link">Войти</Link>
+                    <p className="auth__question-text">
+                        Уже зарегистрированы? <Link to="/sign-in" className="auth__question-link">Войти</Link>
                     </p>
             </section>
     )

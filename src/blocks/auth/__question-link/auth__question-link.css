@@ -1,9 +1,9 @@
-.header__link {
-    color: #ffffff;
+.auth__question-link {
+    color: inherit;
     text-decoration: none;
     transition: all .3s;
 }
 
-.header__link:hover {
+.auth__question-link:hover {
     opacity: .6;
 }
