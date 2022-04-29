@@ -18,7 +18,6 @@ import InfoTooltip from "./InfoTooltip";
 import * as auth from "../utils/Auth";
 
 const api = new Api(optionsApi)
-const token = JSON.parse(localStorage.getItem('jwt'))
 
 function App() {
 
@@ -218,7 +217,9 @@ function App() {
 
     // Вход в профиль по токену
     function handleSignInProfileToken() {
-        if(token) {
+        if (localStorage.getItem('jwt')) {
+            const token = JSON.parse(localStorage.getItem('jwt'))
+
             auth.getUserInfo(token)
                 .then(res => {
                     setIsLoggedIn(true)
@@ -235,87 +236,87 @@ function App() {
     return (
         <div className="page__content">
             <CurrentUserContext.Provider value={currentUser}>
-                    <Switch>
-                        <Route path='/sign-in'>
-                            <Header
-                                path="/sign-up"
-                                name="Регистрация"
-                                isLoggedIn={isLoggedIn}
-                            />
-                            <Login
-                                onLogin={handleSignInProfile}
-                                loader={isLoadingButton}
-                            />
-                        </Route>
-                        <Route path='/sign-up'>
-                            <Header
-                                path="/sign-in"
-                                name="Войти"
-                                isLoggedIn={isLoggedIn}
-                            />
-                            <Register
-                                onRegister={handleRegisterProfile}
-                                loader={isLoadingButton}
-                            />
-                        </Route>
-                        <ProtectedRoute
-                            path='/'
+                <Switch>
+                    <Route path='/sign-in'>
+                        <Header
+                            path="/sign-up"
+                            name="Регистрация"
                             isLoggedIn={isLoggedIn}
-                            isPreloader={isPreloader}
-                            onLoggOut={handleSignOutProfile}
-                            userEmail={userEmail}
-                            component={Main}
-                            onEditProfile={handleEditProfileClick}
-                            onAddPlace={handleAddPlaceClick}
-                            onEditAvatar={handleEditAvatarClick}
-                            onCardClick={handleCardClick}
-                            cards={cards}
-                            onCardLike={handleCardLike}
-                            onCardDelete={handleComfirmDeleteClick}
                         />
-                    </Switch>
-                    <Footer/>
-
-                    <InfoTooltip
-                        isOpen={isConfirmPopupOpen}
-                        onClose={closeAllPopups}
-                        isSuccessfully={isSuccessfully}
+                        <Login
+                            onLogin={handleSignInProfile}
+                            loader={isLoadingButton}
+                        />
+                    </Route>
+                    <Route path='/sign-up'>
+                        <Header
+                            path="/sign-in"
+                            name="Войти"
+                            isLoggedIn={isLoggedIn}
+                        />
+                        <Register
+                            onRegister={handleRegisterProfile}
+                            loader={isLoadingButton}
+                        />
+                    </Route>
+                    <ProtectedRoute
+                        path='/'
+                        isLoggedIn={isLoggedIn}
+                        isPreloader={isPreloader}
+                        onLoggOut={handleSignOutProfile}
+                        userEmail={userEmail}
+                        component={Main}
+                        onEditProfile={handleEditProfileClick}
+                        onAddPlace={handleAddPlaceClick}
+                        onEditAvatar={handleEditAvatarClick}
+                        onCardClick={handleCardClick}
+                        cards={cards}
+                        onCardLike={handleCardLike}
+                        onCardDelete={handleComfirmDeleteClick}
                     />
+                </Switch>
+                <Footer/>
 
-                    {/* Редактировать профиль */}
-                    <EditProfilePopup
-                        isOpen={isEditProfilePopupOpen}
-                        onClose={closeAllPopups}
-                        onUpdateUser={handleUpdateUser}
-                        loader={isLoadingButton}
-                    />
+                <InfoTooltip
+                    isOpen={isConfirmPopupOpen}
+                    onClose={closeAllPopups}
+                    isSuccessfully={isSuccessfully}
+                />
 
-                    {/* Аватар */}
-                    <EditAvatarPopup
-                        isOpen={isEditAvatarPopupOpen}
-                        onClose={closeAllPopups}
-                        onUpdateAvatar={handleUpdateAvatar}
-                        loader={isLoadingButton}
-                    />
+                {/* Редактировать профиль */}
+                <EditProfilePopup
+                    isOpen={isEditProfilePopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateUser={handleUpdateUser}
+                    loader={isLoadingButton}
+                />
 
-                    {/* Новое место */}
-                    <AddPlacePopup
-                        isOpen={isAddPlacePopupOpen}
-                        onClose={closeAllPopups}
-                        onAddPlace={handleAddPlaceSubmit}
-                        loader={isLoadingButton}
-                    />
+                {/* Аватар */}
+                <EditAvatarPopup
+                    isOpen={isEditAvatarPopupOpen}
+                    onClose={closeAllPopups}
+                    onUpdateAvatar={handleUpdateAvatar}
+                    loader={isLoadingButton}
+                />
 
-                    {/* Подтверждение удаления */}
-                    <ConfirmDeletePopup
-                        isOpen={isComfirmDeletePopupOpen}
-                        onClose={closeAllPopups}
-                        onDelete={handleCardDelete}
-                        loader={isLoadingButton}
-                    />
+                {/* Новое место */}
+                <AddPlacePopup
+                    isOpen={isAddPlacePopupOpen}
+                    onClose={closeAllPopups}
+                    onAddPlace={handleAddPlaceSubmit}
+                    loader={isLoadingButton}
+                />
 
-                    {/* Большая картинка */}
-                    <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
+                {/* Подтверждение удаления */}
+                <ConfirmDeletePopup
+                    isOpen={isComfirmDeletePopupOpen}
+                    onClose={closeAllPopups}
+                    onDelete={handleCardDelete}
+                    loader={isLoadingButton}
+                />
+
+                {/* Большая картинка */}
+                <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
             </CurrentUserContext.Provider>
         </div>
     );
