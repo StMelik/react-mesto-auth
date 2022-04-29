@@ -1,8 +1,6 @@
 import Popup from "./Popup"
 
-function ImagePopup(props) {
-    const { card, onClose } = props
-
+function ImagePopup({card, onClose}) {
     return (
         <Popup
             onClose={onClose}

@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react"
+import {useState, useEffect} from "react"
 import PopupWithForm from "./PopupWithForm"
 import Popup from "./Popup"
 
-function AddPlacePopup(props) {
-    const { loader, isOpen, onClose, onAddPlace } = props
-
+function AddPlacePopup({loader, isOpen, onClose, onAddPlace}) {
     const [name, setName] = useState('')
     const [link, setLink] = useState('')
 

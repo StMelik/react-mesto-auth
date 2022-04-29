@@ -1,5 +1,4 @@
-function PopupWithForm(props) {
-    const { name, onClose, title, onSubmit, children, buttonText } = props
+function PopupWithForm({name, onClose, title, onSubmit, children, buttonText}) {
 
     return (
         <div className="popup__container">
@@ -12,9 +11,7 @@ function PopupWithForm(props) {
             <h3 className="popup__title">{title}</h3>
             <form
                 className="popup__form"
-                action="#"
                 name={name}
-                noValidate
                 onSubmit={onSubmit}
             >
                 {children}

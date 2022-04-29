@@ -1,26 +1,27 @@
 import {useState, useEffect} from 'react'
+import {Route, Switch, useHistory} from "react-router-dom";
+import {CurrentUserContext} from '../contexts/CurrentUserContext';
+
+import Api from "../utils/Api"
+import {optionsApi} from "../utils/optionsApi"
+import * as auth from "../utils/Auth";
+
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import Api from "../utils/Api"
-import {optionsApi} from "../utils/optionsApi"
-import {CurrentUserContext} from '../contexts/CurrentUserContext';
+import Login from "./Login";
+import Register from "./Register";
+import ProtectedRoute from "./ProtectedRoute";
+import InfoTooltip from "./InfoTooltip";
 import ImagePopup from './ImagePopup'
 import EditProfilePopup from './EditProfilePopup';
 import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ConfirmDeletePopup from './ComfirmDeletePopup';
-import Login from "./Login";
-import Register from "./Register";
-import {Route, Switch, useHistory} from "react-router-dom";
-import ProtectedRoute from "./ProtectedRoute";
-import InfoTooltip from "./InfoTooltip";
-import * as auth from "../utils/Auth";
 
 const api = new Api(optionsApi)
 
 function App() {
-
     const history = useHistory()
 
     // Статус выполненого входа
@@ -51,16 +52,22 @@ function App() {
     // ID Карточки
     const [cardId, setCardId] = useState('')
 
-    // Запрос данных пользователя и карточек с сервера и вход по токену
+    // Запрос данных пользователя и карточек с сервера
+    useEffect(() => {
+        if (isLoggedIn) {
+            Promise.all([api.getUserInfo(), api.getInitialCards()])
+                .then(([user, cards]) => {
+                    setCurrentUser(user)
+                    setCards(cards)
+                    setIsPreloader(false)
+                })
+                .catch(err => console.log("Не удалось загрузить страницу:", err))
+        }
+    }, [isLoggedIn])
+
+    // Вход по токену при загрузке страницы
     useEffect(() => {
         handleSignInProfileToken()
-        Promise.all([api.getUserInfo(), api.getInitialCards()])
-            .then(res => {
-                setCurrentUser(res[0])
-                setCards(res[1])
-                setIsPreloader(false)
-            })
-            .catch(err => console.log("Не удалось загрузить страницу:", err))
     }, [])
 
     // Управление состоянием попапов (открыть)

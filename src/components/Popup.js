@@ -1,7 +1,6 @@
-import { useEffect, useRef } from 'react'
+import {useEffect, useRef} from 'react'
 
-function Popup(props) {
-    const { children, onClose, isOpen } = props
+function Popup({children, onClose, isOpen}) {
     const popup = useRef()
 
     useEffect(() => {

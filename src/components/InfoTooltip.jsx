@@ -1,10 +1,7 @@
 import Popup from "./Popup";
 
 
-function InfoTooltip(props) {
-
-    const {isOpen, onClose, isSuccessfully} = props
-
+function InfoTooltip({isOpen, onClose, isSuccessfully}) {
     return (
         <Popup
             isOpen={isOpen}

@@ -1,12 +1,10 @@
 import logo from '../images/logo.svg';
 import {Link} from "react-router-dom";
 
-function Header(props) {
-    const {onLoggOut, isLoggedIn, userEmail, name, path} = props
-
+function Header({onLoggOut, isLoggedIn, userEmail, name, path}) {
     return (
         <header className="header">
-            <img className="header__logo" src={logo} alt="Логотип" />
+            <img className="header__logo" src={logo} alt="Логотип"/>
             <div className="header__info-box">
                 {isLoggedIn ? <p className="header__email">{userEmail}</p> : null}
                 {isLoggedIn ?
