@@ -259,7 +259,6 @@ function App() {
                             />
                         </Route>
                         <ProtectedRoute
-                            exact
                             path='/'
                             isLoggedIn={isLoggedIn}
                             isPreloader={isPreloader}
